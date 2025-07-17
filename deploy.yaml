@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-client-k8s
+  namespace: hello-pvc
+spec:
+  selector:
+    matchLabels:
+      app: hello-client-k8s
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: hello-client-k8s
+    spec:
+      containers:
+        - name: hello-client-k8s
+          image: ghcr.io/nuwas/hello-world-go:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: log-volume
+              mountPath: /var/log/app/delivery
+      volumes:
+        - name: log-volume
+          persistentVolumeClaim:
+            claimName: hello-pvc
+      imagePullSecrets:
+        - name: github-registry-secret

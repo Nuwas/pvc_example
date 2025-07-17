@@ -1,0 +1,45 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: hello-local-path
+provisioner: kubernetes.io/minikube-hostpath
+volumeBindingMode: WaitForFirstConsumer
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: hello-pv
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: hello-local-path
+  local:
+    path: "/tmp/pvc-local-path"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - cnx
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hello-pvc
+  namespace: hello-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: hello-local-path
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: hello-pv
