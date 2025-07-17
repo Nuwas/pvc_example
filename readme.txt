@@ -9,7 +9,6 @@ mkdir -p /tmp/pvc-local-path
 root@sample:/opt/dev/pvc_example# kubectl get pvc -A
 NAMESPACE   NAME                 STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS       VOLUMEATTRIBUTESCLASS   AGE
 hello-pvc   hello-pvc            Bound    hello-pv                                   2Gi        RWO            hello-local-path   <unset>                 6m8s
-root@cnx:/opt/dev/pvc_example#
 
 
 
@@ -24,10 +23,9 @@ NAME                   PROVISIONER                       RECLAIMPOLICY   VOLUMEB
 hello-local-path       kubernetes.io/minikube-hostpath   Delete          WaitForFirstConsumer   false                  6m36s
 
 
+
+
 # Deploy the pod
-
-
-
 
 root@sample:/opt/dev/pvc_example# kubectl get all -n hello-pvc
 NAME                                    READY   STATUS    RESTARTS   AGE
